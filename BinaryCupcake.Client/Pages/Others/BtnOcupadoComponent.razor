@@ -1,0 +1,10 @@
+@if (MostrarBtnOcupado)
+{
+    <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Processando, por favor aguarde!
+    </button>
+}
+@code{
+    [Parameter] public bool MostrarBtnOcupado { get; set; }
+}

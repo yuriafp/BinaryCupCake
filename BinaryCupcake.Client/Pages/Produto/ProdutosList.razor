@@ -1,0 +1,98 @@
+﻿@page "/produtos"
+<div class="container">
+    <h1 class="text-center my-4">Todos nossos Cupcakes</h1>
+
+    @if (carregando)
+    {
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="spinner-border text-dark" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else if (ListaTodosProdutos.Any())
+    {
+        <div class="row g-3">
+            @foreach (var produto in ListaTodosProdutos)
+            {
+                <div class="col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+                    <div class="card shadow-lg" style="width: 100%; max-width: 450px; height: 500px; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        @if (!string.IsNullOrEmpty(produto.Base64Img))
+                        {
+                            <img src="@produto.Base64Img" class="card-img-top" style="max-height: 200px; object-fit: contain; width: 100%;" alt="@produto.Nome">
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/300" class="card-img-top" style="max-height: 200px; object-fit: contain; width: 100%;" alt="Imagem não disponível">
+                        }
+
+                        <div class="card-body p-3 d-flex flex-column justify-content-between" style="height: calc(100% - 200px);">
+                            <h5 class="card-title fs-6 text-center" style="font-weight: bold; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                @produto.Nome
+                            </h5>
+                            <p class="card-text text-center fs-7 text-muted" style="margin-bottom: 8px;">
+                                @(produto.Preco?.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) ?? "Preço não disponível")
+                            </p>
+                            <p class="card-text text-center fs-8" style="text-align: justify; overflow: hidden; text-overflow: ellipsis; white-space: normal; max-height: 70px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                                @GetDescricao(produto.Descricao!)
+                            </p>
+
+                            <div class="d-flex justify-content-around mt-2">
+                                <a href="/detalhes-produto/@produto.Id" class="btn btn-primary btn-sm w-100" style="margin-right: 5px;">Mais detalhes</a>
+                                <button class="btn btn-outline-dark btn-sm w-100">Adicionar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Nenhum produto disponível!</div>
+    }
+</div>
+
+@code {
+    List<Produto>? ListaTodosProdutos = new();
+    bool carregando = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RecuperaTodosProdutos();
+        carregando = false;
+    }
+
+    private async Task RecuperaTodosProdutos()
+    {
+        ListaTodosProdutos?.Clear();
+
+        var produtosDestacadosTask = ClientService.ListaTodosProdutos(true);
+        var produtosNaoDestacadosTask = ClientService.ListaTodosProdutos(false);
+
+        // Aguarda ambas as requisições completarem
+        await Task.WhenAll(produtosDestacadosTask, produtosNaoDestacadosTask);
+
+        // Obtém as listas retornadas pelas tarefas
+        var produtosDestacados = await produtosDestacadosTask;
+        var produtosNaoDestacados = await produtosNaoDestacadosTask;
+
+        // Adiciona os produtos destacados à lista, se houver
+        if (produtosDestacados != null && produtosDestacados.Any())
+        {
+            ListaTodosProdutos?.AddRange(produtosDestacados);
+        }
+
+        // Adiciona os produtos não destacados à lista, se houver
+        if (produtosNaoDestacados != null && produtosNaoDestacados.Any())
+        {
+            ListaTodosProdutos?.AddRange(produtosNaoDestacados);
+        }
+    }
+
+    string GetDescricao(string descricao)
+    {
+        int tamanhoMax = 150;
+        return descricao.Length > tamanhoMax ? $"{descricao.Substring(0, tamanhoMax)}..." : descricao;
+    }
+}
