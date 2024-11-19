@@ -9,9 +9,9 @@ namespace BinaryCupcake.SharedLibrary.DTOs
 {
     public class LoginDTO
     {
-        [Required, EmailAddress, DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "O campo Email é obrigatório!"), EmailAddress(ErrorMessage = "Digite um email válido!"), DataType(DataType.EmailAddress)]
         public string? Email {  get; set; }
-        [Required, DataType(DataType.Password)]
+        [Required(ErrorMessage = "O campo Senha é obrigatória!"), DataType(DataType.Password)]
         public string? Senha { get; set; }
     }
 }

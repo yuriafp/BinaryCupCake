@@ -1,22 +1,33 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.JSInterop
+@using System.ComponentModel.DataAnnotations
+
 @using BinaryCupcake.Client
 @using BinaryCupcake.Client.Layout
-
-
 @using BinaryCupcake.SharedLibrary.Models
 @using BinaryCupcake.Client.Services
 @using BinaryCupcake.Client.Pages.Others
 @* @using BinaryCupcake.Client.Pages.Categoria *@
 @using BinaryCupcake.Client.Pages.Produto
+@using BinaryCupcake.SharedLibrary.DTOs
+@using BinaryCupcake.Client.Autenticacao
 
 @using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Blazored.LocalStorage;
+
 
 @inject IJSRuntime js
 @inject IProdutoService ClientService
+@inject IUsuarioService usuarioService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@* @inject MessageDialog messageDialog *@

@@ -1,0 +1,80 @@
+﻿@page "/login"
+@using BinaryCupcake.Client.Autenticacao
+
+<div class="container-fluid">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header text-center">
+                    <h3>Login</h3>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="Usuario" OnValidSubmit="HandleLogin">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="form-label">Email:</label>
+                            <SfTextBox TValue="string" @bind-Value="Usuario.Email" Placeholder="Digite seu email" CssClass="e-outline"></SfTextBox>
+                        </div>
+
+                        <!-- Senha -->
+                        <div class="form-group mt-3">
+                            <label class="form-label">Senha:</label>
+                            <SfTextBox TValue="string" @bind-Value="Usuario.Senha" Placeholder="Digite sua senha" CssClass="e-outline" InputType="InputType.Password"></SfTextBox>
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="form-group mt-4 text-center">
+                            @if (MostrarBtnLogin)
+                            {
+                                <SfButton CssClass="e-outline e-primary" IsPrimary="true" Content="Entrar"></SfButton>
+                            }
+                            <BtnOcupadoComponent MostrarBtnOcupado="MostrarBtnOcupado"></BtnOcupadoComponent>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<MessageDialog @ref="messageDialog"></MessageDialog>
+
+@code {
+
+    LoginDTO Usuario = new();
+
+    public bool MostrarBtnLogin { get; set; } = true;
+    public bool MostrarBtnOcupado { get; set; } = false;
+
+    MessageDialog? messageDialog;
+
+    async Task HandleLogin()
+    {
+        MostrarBtnLogin = false;
+        MostrarBtnOcupado = true;
+
+        var resultado = await usuarioService.Login(Usuario);
+
+        if (resultado.Flag)
+        {
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+            await customAuthStateProvider.AtualizaAuthenticationState(new TokenProp
+                {
+                    Token = resultado.Token,
+                    TokenRenovacao = resultado.TokenRenovacao
+                });
+                NavManager.NavigateTo("/", forceLoad: true);
+        }
+    }
+
+    async Task SetMessageDialog()
+    {
+        await messageDialog!.ShowMessage();
+        MostrarBtnOcupado = false;
+        MostrarBtnLogin = true;
+        StateHasChanged();
+    }
+}

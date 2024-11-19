@@ -25,18 +25,38 @@ namespace BinaryCupcake.Server.Controllers
             var response = await usuarioService.Login(login);
             return Ok(response);
         }
-        //[HttpGet("usuario-info")]
-        //public async Task<IActionResult> GetUsuarioInfo()
-        //{
-        //    var token = GetTokenDoHeader();
-        //    if(string.IsNullOrEmpty(token)) return Unauthorized();
+        [HttpGet("usuario-info")]
+        public async Task<IActionResult> GetUsuarioInfo()
+        {
+            var token = GetTokenHeader();
+            if (string.IsNullOrEmpty(token)) return Unauthorized();
 
-        //    var buscaUsuario = await usuarioService.GetUsuarioPorToken(token!);
-        //    if (buscaUsuario is null || string.IsNullOrEmpty(buscaUsuario.Email)) return Unauthorized();
+            var buscaUsuario = await usuarioService.GetUsuarioPorToken(token!);
+            if (buscaUsuario is null || string.IsNullOrEmpty(buscaUsuario.Email)) return Unauthorized();
 
-        //    return Ok(buscaUsuario);
-        //}
+            return Ok(buscaUsuario);
+        }
+        [HttpPost("renova-token")]
+        public async Task<ActionResult<LoginResponse>> RenovaToken(TokenRenovacaoDTO tokenRenovacao)
+        {
+            if (tokenRenovacao is null) return Unauthorized();
+            var resultadoToken = await usuarioService.GetRenovacaoToken(tokenRenovacao);
+            return Ok(resultadoToken);
+        }
 
+        private string GetTokenHeader()
+        {
+            string token = string.Empty;
+            foreach (var header in Request.Headers)
+            {
+                if (header.Key.ToString().Equals("Authorization"))
+                {
+                    token = header.Value.ToString();
+                    break;
+                }
+            }
+            return token.Split("").LastOrDefault()!;
+        }
     }
 }
 

@@ -27,6 +27,11 @@ namespace BinaryCupcake.Server.Repositories
         }
         public async Task<SessaoUsuario> GetUsuarioPorToken(string token)
         {
+            if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                token = token.Substring(7); // Remover "Bearer " (7 caracteres)
+            }
+
             var resultado = await appDbContext.TokenInfo.FirstOrDefaultAsync(x => x.TokenAcesso!.Equals(token));
             if (resultado is null) return null!;
 
@@ -166,7 +171,7 @@ namespace BinaryCupcake.Server.Repositories
             {
                 buscaUsuario.TokenRenovacao = tokenRenovacao;
                 buscaUsuario.TokenAcesso = tokenAcesso;
-                buscaUsuario.DataExpiracao = DateTime.Now.AddDays(1);
+                buscaUsuario.DataExpiracao = DateTime.Now.AddDays(1).ToUniversalTime();
                 await Commit();
             }
         }
