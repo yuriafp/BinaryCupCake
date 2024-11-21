@@ -219,9 +219,9 @@ namespace BinaryCupcake.Client.Services
             return new ServiceResponse(true, "Produto removido com sucesso");
         }
 
-        public async Task<string> GetCarrinhoLocalStorage() => await localStorageService.GetItemAsStringAsync("carrinho");
-        public async Task SetCarrinhoLocalStorage(string carrinho) => await localStorageService.SetItemAsStringAsync("carrinho", carrinho);
-        public async Task RemoveCarrinhoLocalStorage() => await localStorageService.RemoveItemAsync("carrinho");
+        private async Task<string> GetCarrinhoLocalStorage() => await localStorageService.GetItemAsStringAsync("carrinho");
+        private async Task SetCarrinhoLocalStorage(string carrinho) => await localStorageService.SetItemAsStringAsync("carrinho", carrinho);
+        private async Task RemoveCarrinhoLocalStorage() => await localStorageService.RemoveItemAsync("carrinho");
 
         #endregion Carrinho
     }

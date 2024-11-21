@@ -9,7 +9,7 @@
                     <h3>Login</h3>
                 </div>
                 <div class="card-body">
-                    <EditForm Model="Usuario" OnValidSubmit="HandleLogin">
+                    <EditForm Model="Usuario" OnValidSubmit="UsuarioLogin">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
 
@@ -51,7 +51,7 @@
 
     MessageDialog? messageDialogLogin;
 
-    async Task HandleLogin()
+    async Task UsuarioLogin()
     {
         MostrarBtnLogin = false;
         MostrarBtnOcupado = true;

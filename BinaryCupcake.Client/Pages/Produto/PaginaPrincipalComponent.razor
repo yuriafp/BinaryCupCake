@@ -10,12 +10,12 @@
                     </div>
                 </div>
             }
-            else if (ListaProdutoDestacado.Any())
+            else if (ListaProdutoDestacado!.Any())
             {
                 <div class="control-container text-dark">
                     <SfCarousel ButtonsVisibility="CarouselButtonVisibility.VisibleOnHover" AnimationEffect="CarouselAnimationEffect.Slide" AutoPlay="true" ShowIndicators="false">
                         <ChildContent>
-                            @foreach (Produto produto in ListaProdutoDestacado.OrderByDescending(produto => produto.Data).Take(5))
+                            @foreach (Produto produto in ListaProdutoDestacado!.OrderByDescending(produto => produto.Data).Take(5))
                             {
                                 <CarouselItem>
                                     <figure class="img-container d-flex justify-content-center align-items-center mb-4">
@@ -27,7 +27,7 @@
                                                 <span style="font-family: 'Roboto'; text-indent: 2px;" class="text-dark fw-bold display-4">
                                                     @produto.Nome
                                                     <sup style="font-family: 'Roboto';">
-                                                        <span class="badge rounded-pill bg-black fs-6">@GetLabel(produto.Data)</span>
+                                                        <span class="badge rounded-pill bg-black fs-6">@GetNovidade(produto.Data)</span>
                                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                                               style="font-family: 'Roboto'; font-size: 20px; padding: 0.5em 1em;">
                                                             @(produto.Preco.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) ?? "Preço não disponível")
@@ -40,12 +40,11 @@
                                                 @GetDescricao(produto.Descricao!)
                                             </p>
                                         </div>
-
                                         <div class="d-flex justify-content-center align-items-center gap-3 mt-4 flex-wrap">
-                                            <button class="btn btn-secondary fw-bold px-4 py-2" id="styleButton">
+                                            <button class="btn btn-secondary fw-bold px-4 py-2" @onclick="() => NavigateTo(produtos)" id="styleButton">
                                                 <i class="fa fa-list"></i> Mais detalhes
                                             </button>
-                                            <button class="btn btn-outline-dark fw-bold px-1 py-2" id="styleButton">
+                                            <button class="btn btn-outline-dark fw-bold px-1 py-2" @onclick="() => AddCarrinho(produto, 1)" id="styleButton">
                                                 <i class="fa fa-cart-plus"></i> Adicionar ao carrinho!
                                             </button>
                                         </div>
@@ -82,6 +81,7 @@
 @code {
     List<Produto>? ListaProdutoDestacado = new();
     bool carregando = true;
+    string produtos = "/produtos";
 
     protected override async Task OnInitializedAsync()
     {
@@ -101,17 +101,29 @@
             ListaProdutoDestacado!.Add(produto);
         }
     }
-
-    string GetLabel(DateTime dataUpload)
+    string GetNovidade(DateTime dataUpload)
     {
         int maxDias = 30;
         int diasDesdeUpload = (DateTime.Now.ToUniversalTime() - dataUpload).Days;
         return diasDesdeUpload <= maxDias ? "Novidade" : string.Empty;
     }
-
     string GetDescricao(string descricao)
     {
         int tamanhoMax = 500;
         return descricao.Length > tamanhoMax ? $"{descricao.Substring(0, tamanhoMax)}..." : descricao;
+    }
+    private async Task AddCarrinho(Produto produto, int quantidade = 1)
+    {
+        if (quantidade <= 0)
+        {
+            return;
+        }
+
+        var response = await carrinhoService.AddCarrinho(produto, quantidade);
+
+    }
+    private void NavigateTo(string url)
+    {
+        NavManager.NavigateTo(url);
     }
 }

@@ -8,6 +8,6 @@ namespace BinaryCupcake.Server.Repositories
         Task<ServiceResponse> Registrar(UsuarioDTO usuario);
         Task<LoginResponse> Login(LoginDTO login);
         Task<SessaoUsuario> GetUsuarioPorToken(string token);
-        Task<LoginResponse>GetRenovacaoToken(TokenRenovacaoDTO token);
+        Task<LoginResponse> GetRenovacaoToken(TokenRenovacaoDTO token);
     }
 }

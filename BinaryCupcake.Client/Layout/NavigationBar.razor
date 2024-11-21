@@ -1,20 +1,13 @@
 ﻿
 <nav class="navbar navbar-expand-lg navbar-light bg-light custom-bg">
     <div class="container-fluid">
-
-        <!-- Botão para expandir o menu em telas pequenas -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- logo -->
         <a href="/home" class="navbar-brand ms-auto" style="font-family: 'Roboto'; font-weight: bold; font-size: 1.2rem;">
             BinaryCupcakes <i class="fa-solid fa-cookie-bite"></i>
         </a>
-
-        <!-- Conteúdo colapsável (links de navegação) -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Links de navegação à esquerda -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-family:'Roboto'">
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="/produtos">Produtos</a>
@@ -23,20 +16,7 @@
                     <a class="nav-link d-flex align-items-center" href="/contato">Contato</a>
                 </li>
             </ul>
-
-            @*  <!-- Botão de busca condicional à direita -->
-            @if (ShowSearchIcon)
-            {
-            <button @onclick="SearchClicked" class="btn btn-none">
-            <i class="fa fa-magnifying-glass fs-5" style="cursor:pointer"></i>
-            </button>
-            }
-            @if (ShowSearch)
-            {
-            <SearchComponent></SearchComponent>
-            } *@
         </div>
-
     </div>
     <!-- Dropdown de usuário à direita -->
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-family:'Roboto'">
@@ -64,6 +44,7 @@
                 <AuthorizeView>
                     <!-- Se o usuário está autenticado -->
                     <Authorized>
+                       @*  @if context.User.IsInRole *@
                         <li><a class="dropdown-item fs-6" href="#">Meu Perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item fs-6" @onclick="()=> Logout()">Sair</a></li>
@@ -71,8 +52,8 @@
 
                     <!-- Se o usuário não está autenticado -->
                     <NotAuthorized>
-                        <li><a class="dropdown-item fs-6" @onclick="()=> NavigateTo(login)">Login</a></li>
-                        <li><a class="dropdown-item fs-6" @onclick="()=> NavigateTo(registrar)">Registrar</a></li>
+                        <li><a class="dropdown-item fs-6" @onclick="()=> NavManager.NavigateTo(login)">Login</a></li>
+                        <li><a class="dropdown-item fs-6" @onclick="()=> NavManager.NavigateTo(registrar)">Registrar</a></li>
                     </NotAuthorized>
                 </AuthorizeView>
             </ul>
@@ -86,15 +67,10 @@
     public string registrar = "/registrar";
     public string logout = "/logout";
 
-    void NavigateTo(string url)
-    {
-        NavManager.NavigateTo(url);
-    }
-
     private async Task Logout()
     {
         await js.InvokeVoidAsync("logout");
 
-        NavManager.NavigateTo("/");
+        NavManager.NavigateTo("/", forceLoad: true);
     }
 }
