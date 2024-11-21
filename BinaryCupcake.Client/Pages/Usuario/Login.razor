@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center mt-5">
         <div class="col-md-4">
-            <div class="card shadow-lg">
+            <div class="card shadow-lg" style="transform: none;">
                 <div class="card-header text-center">
                     <h3>Login</h3>
                 </div>
@@ -22,7 +22,7 @@
                         <!-- Senha -->
                         <div class="form-group mt-3">
                             <label class="form-label">Senha:</label>
-                            <SfTextBox TValue="string" @bind-Value="Usuario.Senha" Placeholder="Digite sua senha" CssClass="e-outline" InputType="InputType.Password"></SfTextBox>
+                            <SfTextBox TValue="string" @bind-Value="Usuario.Senha" Placeholder="Digite sua senha" CssClass="e-outline" InputType="InputType.Password" HtmlAttributes="@(new Dictionary<string, object> { { "type", "password" } })"></SfTextBox>
                         </div>
 
                         <!-- Botões -->
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<MessageDialog @ref="messageDialog"></MessageDialog>
+<MessageDialog @ref="messageDialogLogin"></MessageDialog>
 
 @code {
 
@@ -49,7 +49,7 @@
     public bool MostrarBtnLogin { get; set; } = true;
     public bool MostrarBtnOcupado { get; set; } = false;
 
-    MessageDialog? messageDialog;
+    MessageDialog? messageDialogLogin;
 
     async Task HandleLogin()
     {
@@ -66,13 +66,16 @@
                     Token = resultado.Token,
                     TokenRenovacao = resultado.TokenRenovacao
                 });
-                NavManager.NavigateTo("/", forceLoad: true);
+            NavManager.NavigateTo("/", forceLoad: true);
         }
+        else messageDialogLogin!.SetDialogValues("danger", resultado.Mensagem!);
+
+        await SetMessageDialog();
     }
 
     async Task SetMessageDialog()
     {
-        await messageDialog!.ShowMessage();
+        await messageDialogLogin!.ShowMessage();
         MostrarBtnOcupado = false;
         MostrarBtnLogin = true;
         StateHasChanged();

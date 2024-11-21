@@ -6,8 +6,8 @@
         <EditForm Model="Usuario" OnValidSubmit="HandleRegistrar">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <div class="card">
-                <div class="card-header" align="center">Cadastro</div>
+            <div class="card shadow-lg" style="transform: none;">
+                <div class="card-header " align="center">Cadastro</div>
                 <div class="card-body">
                     <!-- Nome -->
                     <div class="form-group">
@@ -22,13 +22,14 @@
                     <!-- Senha -->
                     <div class="form-group mt-3">
                         <label class="form-label">Senha:</label>
-                        <SfTextBox TValue="string" @bind-Value="Usuario.Senha" Placeholder="Digite sua senha" CssClass="e-outline" InputType="Password"></SfTextBox>
+                        <SfTextBox TValue="string" @bind-Value="Usuario.Senha" Placeholder="Digite sua senha" CssClass="e-outline" InputType="Password" HtmlAttributes="@(new Dictionary<string, object> { { "type", "password" } })"></SfTextBox>
                     </div>
                     <!-- Confirmação da Senha -->
                     <div class="form-group mt-3">
                         <label class="form-label">Confirme a senha:</label>
-                        <SfTextBox TValue="string" @bind-Value="Usuario.ConfirmaSenha" Placeholder="Confirme sua senha" CssClass="e-outline" InputType="Password"></SfTextBox>
+                        <SfTextBox TValue="string" @bind-Value="Usuario.ConfirmaSenha" Placeholder="Confirme sua senha" CssClass="e-outline" InputType="Password" HtmlAttributes="@(new Dictionary<string, object> { { "type", "password" } })"></SfTextBox>
                     </div>
+
                     <!-- Botões -->
                     <div class="form-group mt-3">
                         @if (MostrarBtnSalvar)

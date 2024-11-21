@@ -31,7 +31,7 @@
                                 @produto.Nome
                             </h5>
                             <p class="card-text text-center fs-7 text-muted" style="margin-bottom: 8px;">
-                                @(produto.Preco?.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) ?? "Preço não disponível")
+                                @(produto.Preco.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) ?? "Preço não disponível")
                             </p>
                             <p class="card-text text-center fs-8" style="text-align: justify; overflow: hidden; text-overflow: ellipsis; white-space: normal; max-height: 70px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                                 @GetDescricao(produto.Descricao!)
@@ -39,7 +39,8 @@
 
                             <div class="d-flex justify-content-around mt-2">
                                 <a href="/detalhes-produto/@produto.Id" class="btn btn-primary btn-sm w-100" style="margin-right: 5px;">Mais detalhes</a>
-                                <button class="btn btn-outline-dark btn-sm w-100">Adicionar</button>
+                                @* <button class="btn btn-outline-dark btn-sm w-100" onclick="@AddCarrinho(produto)">Adicionar</button> *@
+                                <button class="btn btn-outline-dark btn-sm w-100" @onclick="() => AddCarrinho(produto, 1)">Adicionar</button>
                             </div>
                         </div>
                     </div>
@@ -94,5 +95,16 @@
     {
         int tamanhoMax = 150;
         return descricao.Length > tamanhoMax ? $"{descricao.Substring(0, tamanhoMax)}..." : descricao;
+    }
+
+    private async Task AddCarrinho(Produto produto, int quantidade = 1)
+    {
+        if (quantidade <= 0)
+        {
+            return;
+        }
+
+        var response = await carrinhoService.AddCarrinho(produto, quantidade);
+        
     }
 }

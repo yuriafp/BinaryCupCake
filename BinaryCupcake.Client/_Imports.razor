@@ -18,6 +18,8 @@
 @using BinaryCupcake.Client.Pages.Produto
 @using BinaryCupcake.SharedLibrary.DTOs
 @using BinaryCupcake.Client.Autenticacao
+@using BinaryCupcake.Client.PrivateModels
+@using BinaryCupcake.SharedLibrary.Responses
 
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
@@ -28,6 +30,7 @@
 @inject IJSRuntime js
 @inject IProdutoService ClientService
 @inject IUsuarioService usuarioService
+@inject ICarrinho carrinhoService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager
 @* @inject MessageDialog messageDialog *@

@@ -30,7 +30,7 @@
                                                         <span class="badge rounded-pill bg-black fs-6">@GetLabel(produto.Data)</span>
                                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                                               style="font-family: 'Roboto'; font-size: 20px; padding: 0.5em 1em;">
-                                                            @(produto.Preco?.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) ?? "Preço não disponível")
+                                                            @(produto.Preco.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")) ?? "Preço não disponível")
                                                             <span class="visually-hidden"></span>
                                                         </span>
                                                     </sup>

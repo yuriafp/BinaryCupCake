@@ -1,4 +1,5 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-light custom-bg">
+﻿
+<nav class="navbar navbar-expand-lg navbar-light bg-light custom-bg">
     <div class="container-fluid">
 
         <!-- Botão para expandir o menu em telas pequenas -->
@@ -40,9 +41,9 @@
     <!-- Dropdown de usuário à direita -->
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-family:'Roboto'">
         <!-- Link da marca/carrinho à esquerda -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/carrinho">
             <i class="fa fa-cart-shopping fs-6 text-dark"></i>
-            <span class="small text-danger fw-bold">1</span>
+            <span class="small text-danger fw-bold">@carrinhoService.CarrinhoContador</span>
         </a>
 
         <a class="navbar-brand" href="#">
@@ -50,9 +51,9 @@
                 <Authorized>
                     <span class="small ms-auto">@context.User.Identity!.Name</span>
                 </Authorized>
-                <NotAuthorized> <span class="small">Convidado</span></NotAuthorized>
             </AuthorizeView>
         </a>
+
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,7 +66,7 @@
                     <Authorized>
                         <li><a class="dropdown-item fs-6" href="#">Meu Perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item fs-6" @onclick="()=> NavigateTo(logout)">Sair</a></li>
+                        <li><a class="dropdown-item fs-6" @onclick="()=> Logout()">Sair</a></li>
                     </Authorized>
 
                     <!-- Se o usuário não está autenticado -->
@@ -81,20 +82,19 @@
 
 
 @code {
-    // public bool ShowSearch { get; set; }
-    // public bool ShowSearchIcon { get; set; }
     public string login = "/login";
     public string registrar = "/registrar";
     public string logout = "/logout";
 
-    // void SearchClicked()
-    // {
-    //     ShowSearch = true;
-    //     ShowSearchIcon = !ShowSearch;
-    // }
-
     void NavigateTo(string url)
     {
         NavManager.NavigateTo(url);
+    }
+
+    private async Task Logout()
+    {
+        await js.InvokeVoidAsync("logout");
+
+        NavManager.NavigateTo("/");
     }
 }

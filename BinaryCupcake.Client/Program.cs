@@ -21,6 +21,7 @@ builder.Services.AddScoped<IProdutoService, ClientServices>();
 builder.Services.AddScoped<IUsuarioService, ClientServices>();
 builder.Services.AddScoped<AutenticacaoService>();
 //builder.Services.AddScoped<MessageDialog>();
+builder.Services.AddScoped<ICarrinho, ClientServices>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 

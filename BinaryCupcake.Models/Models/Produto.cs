@@ -11,7 +11,7 @@ namespace BinaryCupcake.SharedLibrary.Models
         [Required]
         public string? Descricao { get; set; }
         [Required, Range(0.1, 999999.99)]
-        public decimal? Preco { get; set; }
+        public decimal Preco { get; set; }
         [Required, DisplayName("Imagem do Produto")]
         public string? Base64Img { get; set; }
         [Required, Range(1, 99999)]
