@@ -14,7 +14,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Starting
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("ConnectionString não encontrada."));
@@ -22,10 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IProduto, ProdutoRepository>();
 builder.Services.AddScoped<IUsuario, UsuarioRepository>();
-
-//Ending
-
-
+builder.Services.AddScoped<IPagamento, PagamentoRepository>();
 
 var app = builder.Build();
 

@@ -18,8 +18,7 @@ namespace BinaryCupcake.Client.Services
 
         public Action? CarrinhoAction { get; set; }
         public int CarrinhoContador { get; set; }
-        public bool CarrinhoVisivel { get; set; }
-
+        
         #region Json
         private static string SerializeObj(object modelObject) => JsonSerializer.Serialize(modelObject, JsonOptions());
         private static T DeserializeJsonString<T>(string jsonString) => JsonSerializer.Deserialize<T>(jsonString, JsonOptions())!;
@@ -171,7 +170,6 @@ namespace BinaryCupcake.Client.Services
 
         public async Task<List<Pedido>> MeusPedidos()
         {
-            CarrinhoVisivel = true;
             var carrinhoList = new List<Pedido>();
             string meuCarrinhoString = await GetCarrinhoLocalStorage();
             if (string.IsNullOrEmpty(meuCarrinhoString)) return null!;
@@ -200,7 +198,6 @@ namespace BinaryCupcake.Client.Services
                 });
 
             }
-            CarrinhoVisivel = false;
             await GetCarrinhoContador();
             return carrinhoList;
         }
@@ -218,11 +215,19 @@ namespace BinaryCupcake.Client.Services
 
             return new ServiceResponse(true, "Produto removido com sucesso");
         }
+        public async Task<string> Pagamento(List<Pedido> carrinho)
+        {
+            var response = await httpClient.PostAsync("api/pagamento/pagamento", JsonContentService.GenerateStringContent(JsonContentService.SerializeObj(carrinho)));
 
+            var resultado = await response.Content.ReadAsStringAsync();
+
+            return resultado;
+        }
         private async Task<string> GetCarrinhoLocalStorage() => await localStorageService.GetItemAsStringAsync("carrinho");
         private async Task SetCarrinhoLocalStorage(string carrinho) => await localStorageService.SetItemAsStringAsync("carrinho", carrinho);
         private async Task RemoveCarrinhoLocalStorage() => await localStorageService.RemoveItemAsync("carrinho");
 
+        
         #endregion Carrinho
     }
 }

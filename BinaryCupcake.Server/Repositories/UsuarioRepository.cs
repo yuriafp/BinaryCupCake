@@ -67,7 +67,7 @@ namespace BinaryCupcake.Server.Repositories
             var (tokenAcesso, TokenRenovacao) = await GerarTokens();
 
             await SalvarToken(buscaUsuario.Id, tokenAcesso, TokenRenovacao);
-            return new LoginResponse(true, "Login sucedido!", tokenAcesso, TokenRenovacao);
+            return new LoginResponse(true, null, tokenAcesso, TokenRenovacao);
         }
         public async Task<ServiceResponse> Registrar(UsuarioDTO usuario)
         {

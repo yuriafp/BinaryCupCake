@@ -68,9 +68,14 @@
                 });
             NavManager.NavigateTo("/", forceLoad: true);
         }
-        else messageDialogLogin!.SetDialogValues("danger", resultado.Mensagem!);
 
-        await SetMessageDialog();
+        else
+        {
+            messageDialogLogin!.SetDialogValues("danger", resultado.Mensagem!);
+            await SetMessageDialog();
+        }
+
+        
     }
 
     async Task SetMessageDialog()

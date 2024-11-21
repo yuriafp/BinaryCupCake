@@ -12,7 +12,6 @@ namespace BinaryCupcake.Client.Services
         Task<ServiceResponse> AddCarrinho(Produto produto, int quantidade = 1);
         Task<List<Pedido>> MeusPedidos();
         Task<ServiceResponse> RemoverCarrinho(Pedido carrinho);
-        bool CarrinhoVisivel {  get; set; }
-
+        Task<string> Pagamento(List<Pedido> carrinho);
     }
 }
