@@ -44,7 +44,10 @@
                 <AuthorizeView>
                     <!-- Se o usuário está autenticado -->
                     <Authorized>
-                       @*  @if context.User.IsInRole *@
+                        @if (context.User.IsInRole("Admin"))
+                        {
+                            <li><a class="dropdown-item fs-6" href="/add-produto">Adicionar Produtos</a></li>
+                        }
                         <li><a class="dropdown-item fs-6" href="#">Meu Perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item fs-6" @onclick="()=> Logout()">Sair</a></li>
@@ -55,6 +58,8 @@
                         <li><a class="dropdown-item fs-6" @onclick="()=> NavManager.NavigateTo(login)">Login</a></li>
                         <li><a class="dropdown-item fs-6" @onclick="()=> NavManager.NavigateTo(registrar)">Registrar</a></li>
                     </NotAuthorized>
+
+
                 </AuthorizeView>
             </ul>
         </li>

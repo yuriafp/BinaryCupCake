@@ -13,7 +13,7 @@ namespace BinaryCupcake.Server.Repositories
         }
         public string CriarSessaoDePagamento(List<Pedido> carrinho)
         {
-            if (carrinho is not null) return null!;
+            if (carrinho is null) return null!;
 
             var itensDeLinha = new List<SessionLineItemOptions>();
 
@@ -21,7 +21,7 @@ namespace BinaryCupcake.Server.Repositories
             {
                 PriceData = new SessionLineItemPriceDataOptions
                 {
-                    UnitAmountDecimal = item.Preco * 100,
+                    UnitAmountDecimal = (item.Preco * 100),
                     Currency = "brl",
                     ProductData = new SessionLineItemPriceDataProductDataOptions
                     {
@@ -31,6 +31,24 @@ namespace BinaryCupcake.Server.Repositories
                 },
                 Quantity = item.Quantidade
             }));
+
+            var taxaDeEntregaItem = new SessionLineItemOptions
+            {
+                PriceData = new SessionLineItemPriceDataOptions
+                {
+                    UnitAmountDecimal = Pedido.TaxaEntrega * 100, // Taxa de entrega em centavos
+                    Currency = "brl",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = "Taxa de entrega", // Nome do item de taxa de entrega
+                        Description = "Entrega do pedido"
+                    }
+                },
+                Quantity = 1 // Apenas 1 vez
+            };
+
+            itensDeLinha.Add(taxaDeEntregaItem);
+
 
             var opcoes = new SessionCreateOptions
             {

@@ -9,6 +9,8 @@ namespace BinaryCupcake.SharedLibrary.DTOs
         public string? Nome { get; set; }
         [Required, EmailAddress]
         public string? Email { get; set; }
+        [Required(ErrorMessage = "O endereço é obrigatório.")]
+        public string? Endereco {  get; set; }
         [Required, DataType(DataType.Password)]
         public string? Senha {  get; set; }
         [Required, DataType(DataType.Password), Compare(nameof(Senha))]

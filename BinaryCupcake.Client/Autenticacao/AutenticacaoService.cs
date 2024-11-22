@@ -3,7 +3,6 @@ using BinaryCupcake.SharedLibrary.Responses;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Net.Http.Headers;
-using System.Net.Security;
 using System.Security.Claims;
 using System.Text;
 

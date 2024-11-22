@@ -50,7 +50,8 @@ namespace BinaryCupcake.Server.Repositories
             {
                 Email = buscaUsuario.Email,
                 Nome = buscaUsuario.Nome,
-                Permissao = tipoPermissao.Nome
+                Permissao = tipoPermissao.Nome,
+                Endereco = buscaUsuario.Endereço
             };
         }
         public async Task<LoginResponse> Login(LoginDTO login)

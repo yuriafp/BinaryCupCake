@@ -1,1 +1,88 @@
-﻿
+﻿@page "/pagamento-sucedido"
+@using BinaryCupcake.Client.PrivateModels
+@using BinaryCupcake.Client.Services
+@inject NavigationManager NavigationManager
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header text-center">
+                    <h3>Pagamento Sucedido!</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Seu pagamento foi realizado com sucesso.</p>
+                    <p>Agradecemos pela sua compra! Aqui estão os detalhes do seu pedido:</p>
+
+                    <!-- Detalhes do Pedido -->
+                    <div class="mb-4">
+                        <h5>Detalhes do Pedido</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Produto</th>
+                                    <th scope="col">Preço</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in MeuCarrinhoPedido)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Nome</td>
+                                        <td>R$ @item.Preco.ToString("N2")</td>
+                                        <td>@item.Quantidade</td>
+                                        <td>@string.Format("R$ {0:N2}", item.Preco * item.Quantidade)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <hr />
+                        <p><strong>Total: </strong> R$ @MeuCarrinhoPedido?.Sum(x => x.Total).ToString("N2")</p>
+                    </div>
+
+                    <!-- Botão para voltar à página inicial -->
+                    <button class="btn btn-primary" @onclick="VoltarParaHome">
+                        Voltar para a Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        border-radius: 20px;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+    }
+</style>
+
+@code {
+    // Exemplo de carrinho, pode ser injetado ou recuperado do serviço
+    List<Pedido> MeuCarrinhoPedido = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        // Aqui você recupera o carrinho do serviço ou qualquer fonte de dados que você use
+        MeuCarrinhoPedido = await carrinhoService.MeusPedidos();
+    }
+
+    private void VoltarParaHome()
+    {
+        // Redireciona para a página inicial ou para outra rota desejada
+        NavigationManager.NavigateTo("/");
+    }
+}

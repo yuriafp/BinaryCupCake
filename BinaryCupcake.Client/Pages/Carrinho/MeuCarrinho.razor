@@ -2,20 +2,23 @@
 @using BinaryCupcake.Client.PrivateModels
 @using BinaryCupcake.Client.Services
 @using BinaryCupcake.SharedLibrary.Responses
+@inject AutenticacaoService autenticacaoService
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Resumo do Carrinho -->
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-header text-center">Resumo do Carrinho</div>
                 <div class="card-body text-center">
                     <span class="display-4">
-                        R$ @MeuCarrinhoPedido?.Sum(x => x.Total).ToString("N2")
+                        @((MeuCarrinhoPedido != null && MeuCarrinhoPedido.Any())
+                            ? Pedido.CalcularTotalComTaxaEntrega(MeuCarrinhoPedido).ToString("N2")
+                            : "R$ 0,00")
                     </span>
+                    <p>Taxa de Entrega: <strong>R$ @Pedido.TaxaEntrega.ToString("N2")</strong></p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-danger w-100">
+                    <button class="btn btn-danger w-100" @onclick="Pagamento" disabled="@(MeuCarrinhoPedido == null || !MeuCarrinhoPedido.Any())">
                         <i class="fa fa-cart-arrow-down"></i>
                         Prosseguir para Pagamento
                     </button>
@@ -23,7 +26,6 @@
             </div>
         </div>
 
-        <!-- Detalhes do Carrinho -->
         <div class="col-lg-9">
             <div class="card">
                 <div class="card-header text-center">Detalhes do Carrinho</div>
@@ -72,6 +74,10 @@
                                     <td colspan="7" class="text-center">Seu carrinho está vazio.</td>
                                 </tr>
                             }
+
+                            <tr>
+                                <td colspan="7" class="text-center">Endereco de entrega: @endereco</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -79,8 +85,6 @@
         </div>
     </div>
 </div>
-
-
 
 <style>
     .card {
@@ -98,10 +102,13 @@
 
 @code {
     List<Pedido> MeuCarrinhoPedido = new();
+    private string endereco = string.Empty;
 
     protected async override Task OnInitializedAsync()
     {
         MeuCarrinhoPedido = await carrinhoService.MeusPedidos();
+        var usuario = await autenticacaoService.GetDetalhesUsuario();
+        endereco = usuario.Endereco;
     }
 
     async Task TrataManipulacaoCarrinho(Microsoft.AspNetCore.Components.ChangeEventArgs e, Pedido pedido)
@@ -113,25 +120,26 @@
             {
                 if (novaQuantidade > 0)
                 {
-                    // Atualiza a quantidade no carrinho
                     pedidoAtualizado.Quantidade = novaQuantidade;
                     await carrinhoService.AddCarrinho(new Produto { Id = pedido.Id }, pedidoAtualizado.Quantidade);
                 }
                 else
                 {
-                    // Remove o item do carrinho se a quantidade for zero
                     MeuCarrinhoPedido.Remove(pedidoAtualizado);
                     await carrinhoService.RemoverCarrinho(pedido);
                 }
             }
         }
     }
-
-    // Remove um produto do carrinho
     async Task RemoverProduto(Pedido produto)
     {
         await carrinhoService.RemoverCarrinho(produto);
 
         MeuCarrinhoPedido = await carrinhoService.MeusPedidos();
+    }
+    async Task Pagamento()
+    {
+        var resultado = await carrinhoService.Pagamento(MeuCarrinhoPedido!);
+        NavManager.NavigateTo(resultado);
     }
 }

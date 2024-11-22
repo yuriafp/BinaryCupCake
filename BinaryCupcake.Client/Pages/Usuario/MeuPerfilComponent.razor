@@ -1,0 +1,93 @@
+﻿@page "/perfil"
+@inject NavigationManager NavigationManager
+
+@if (usuarioAutenticado)
+{
+    <div class="container">
+        <h2>Perfil de Usuário</h2>
+        <EditForm Model="usuario" OnValidSubmit="AtualizarPerfil">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="card">
+                <div class="card-header">Informações do Perfil</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="Nome" class="form-label">Nome:</label>
+                        <InputText @bind-Value="usuario.Nome" id="Nome" class="form-control" />
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="Email" class="form-label">Email:</label>
+                        <InputText @bind-Value="usuario.Email" id="Email" class="form-control" />
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="Telefone" class="form-label">Telefone:</label>
+                        <InputText @bind-Value="usuario.Telefone" id="Telefone" class="form-control" />
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="Endereco" class="form-label">Endereço:</label>
+                        <InputTextArea @bind-Value="usuario.Endereco" id="Endereco" class="form-control" />
+                    </div>
+                </div>
+                <div class="card-footer" align="center">
+                    <button class="btn btn-primary" type="submit">Atualizar Perfil</button>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="mt-4">
+            <button class="btn btn-danger" @onclick="Logout">Sair</button>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <p>Você precisa estar autenticado para acessar esta página.</p>
+    </div>
+}
+
+@code {
+    public class Usuario
+    {
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Telefone { get; set; }
+        public string Endereco { get; set; }
+    }
+
+    private Usuario usuario = new Usuario
+        {
+            Nome = "João Silva",
+            Email = "joao.silva@example.com",
+            Telefone = "(11) 98765-4321",
+            Endereco = "Rua Exemplo, 123, São Paulo, SP"
+        };
+
+    private bool usuarioAutenticado = true; // Mock: Simulando que o usuário está autenticado
+
+    private async Task AtualizarPerfil()
+    {
+        // Simulação de atualização do perfil (apenas mockup, sem persistência)
+        // Em um cenário real, você faria uma requisição à API para atualizar os dados do usuário
+        await Task.Delay(500); // Simula um pequeno atraso para a atualização
+
+        // Aqui você pode adicionar lógica para tratar o sucesso ou falha da atualização
+        await Task.CompletedTask;
+    }
+
+    private void Logout()
+    {
+        // Simula o logout do usuário
+        usuarioAutenticado = false;
+        NavigationManager.NavigateTo("/login");
+    }
+}
+
+public class Usuario
+{
+    public string Nome { get; set; }
+    public string Email { get; set; }
+    public string Telefone { get; set; }
+    public string Endereco { get; set; }
+}
