@@ -1,11 +1,13 @@
 ﻿@page "/perfil"
 @inject NavigationManager NavigationManager
+@inject AutenticacaoService autenticacaoService
+@inject IUsuarioService usuarioService
 
 @if (usuarioAutenticado)
 {
     <div class="container">
         <h2>Perfil de Usuário</h2>
-        <EditForm Model="usuario" OnValidSubmit="AtualizarPerfil">
+        <EditForm Model="usuario" OnValidSubmit="AtualizarUsuario">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
@@ -21,23 +23,25 @@
                         <InputText @bind-Value="usuario.Email" id="Email" class="form-control" />
                     </div>
                     <div class="form-group mt-3">
-                        <label for="Telefone" class="form-label">Telefone:</label>
-                        <InputText @bind-Value="usuario.Telefone" id="Telefone" class="form-control" />
-                    </div>
-                    <div class="form-group mt-3">
                         <label for="Endereco" class="form-label">Endereço:</label>
                         <InputTextArea @bind-Value="usuario.Endereco" id="Endereco" class="form-control" />
                     </div>
+                    <div class="form-group mt-3">
+                        <label for="Senha" class="form-label">Senha:</label>
+                        <InputText @bind-Value="usuario.Senha" id="Senha" class="form-control" type="password" />
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="ConfirmarSenha" class="form-label">Confirmar Senha:</label>
+                        <InputText @bind-Value="usuario.ConfirmaSenha" id="ConfirmarSenha" class="form-control" type="password" />
+                    </div>
                 </div>
                 <div class="card-footer" align="center">
+                    @if(MostrarBtnSalvar){
                     <button class="btn btn-primary" type="submit">Atualizar Perfil</button>
+                    }
                 </div>
             </div>
         </EditForm>
-
-        <div class="mt-4">
-            <button class="btn btn-danger" @onclick="Logout">Sair</button>
-        </div>
     </div>
 }
 else
@@ -47,47 +51,64 @@ else
     </div>
 }
 
+<BtnOcupadoComponent MostrarBtnOcupado="MostrarBtnOcupado"></BtnOcupadoComponent>
+<MessageDialog @ref="messageDialogAtualizarPerfil"></MessageDialog>
+
 @code {
-    public class Usuario
+    private UsuarioDTO usuario = new UsuarioDTO();
+    private bool usuarioAutenticado = false;
+    MessageDialog? messageDialogAtualizarPerfil;
+    public bool MostrarBtnOcupado { get; set; }
+    public bool MostrarBtnSalvar { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
     {
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Telefone { get; set; }
-        public string Endereco { get; set; }
+        await ObterDetalhesUsuario();
     }
 
-    private Usuario usuario = new Usuario
+    private async Task ObterDetalhesUsuario()
+    {
+        var sessaoUsuario = await autenticacaoService.GetDetalhesUsuario();
+        if (sessaoUsuario != null)
         {
-            Nome = "João Silva",
-            Email = "joao.silva@example.com",
-            Telefone = "(11) 98765-4321",
-            Endereco = "Rua Exemplo, 123, São Paulo, SP"
-        };
-
-    private bool usuarioAutenticado = true; // Mock: Simulando que o usuário está autenticado
-
-    private async Task AtualizarPerfil()
-    {
-        // Simulação de atualização do perfil (apenas mockup, sem persistência)
-        // Em um cenário real, você faria uma requisição à API para atualizar os dados do usuário
-        await Task.Delay(500); // Simula um pequeno atraso para a atualização
-
-        // Aqui você pode adicionar lógica para tratar o sucesso ou falha da atualização
-        await Task.CompletedTask;
+            usuario = new UsuarioDTO
+                {
+                    Id = sessaoUsuario.Id,
+                    Nome = sessaoUsuario.Nome,
+                    Email = sessaoUsuario.Email,
+                    Endereco = sessaoUsuario.Endereco
+                };
+            usuarioAutenticado = true;
+        }
+        else
+        {
+            usuarioAutenticado = false;
+        }
     }
 
-    private void Logout()
+    private async Task AtualizarUsuario()
     {
-        // Simula o logout do usuário
-        usuarioAutenticado = false;
-        NavigationManager.NavigateTo("/login");
-    }
-}
+        if (usuario.Senha != usuario.ConfirmaSenha)
+        {
+            messageDialogAtualizarPerfil!.SetDialogValues("danger", "As senhas não coincidem.");
+            await SetMessageDialog();
+            return;
+        }
 
-public class Usuario
-{
-    public string Nome { get; set; }
-    public string Email { get; set; }
-    public string Telefone { get; set; }
-    public string Endereco { get; set; }
+        var (flag, mensagem) = await usuarioService.AtualizarUsuarioPorId(usuario);
+        if (flag)
+            messageDialogAtualizarPerfil!.SetDialogValues("success", mensagem);
+        else
+            messageDialogAtualizarPerfil!.SetDialogValues("danger", mensagem);
+
+        await SetMessageDialog();
+    }
+
+    async Task SetMessageDialog()
+    {
+        await messageDialogAtualizarPerfil!.ShowMessage();
+        MostrarBtnOcupado = false;
+        MostrarBtnSalvar = true;
+        StateHasChanged();
+    }
 }

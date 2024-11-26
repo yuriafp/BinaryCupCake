@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BinaryCupcake.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241125190833_release")]
-    partial class release
+    [Migration("20241126183443_fix")]
+    partial class fix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,7 +99,7 @@ namespace BinaryCupcake.Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Endereço")
+                    b.Property<string>("Endereco")
                         .HasColumnType("text");
 
                     b.Property<string>("Nome")

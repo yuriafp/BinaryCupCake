@@ -131,9 +131,9 @@ else
 
     public async Task ValidaUsuarioPermissao()
     {
-        var getSessaoUsuario = await autenticacaoService.GetDetalhesUsuario();
+        var SessaoUsuario = await autenticacaoService.GetDetalhesUsuario();
 
-        if (getSessaoUsuario.Permissao!.Equals("Admin"))
+        if (SessaoUsuario is not null && SessaoUsuario.Permissao.Equals("Admin"))
             verificaPermissaoAdm = true;
         else
             verificaPermissaoAdm = false;

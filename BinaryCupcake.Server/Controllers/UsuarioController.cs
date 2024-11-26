@@ -12,7 +12,7 @@ namespace BinaryCupcake.Server.Controllers
     {
         [HttpPost("registrar")]
 
-        public async Task<ActionResult<ServiceResponse>> CriarUsuario(UsuarioDTO usuario)
+        public async Task<ActionResult<ServiceResponse>> Registrar(UsuarioDTO usuario)
         {
             if (usuario is null) return BadRequest("Usuário não pode ser nulo.");
             var response = await usuarioService.Registrar(usuario);
@@ -36,6 +36,15 @@ namespace BinaryCupcake.Server.Controllers
 
             return Ok(buscaUsuario);
         }
+        [HttpPut("atualizar")]
+        public async Task<IActionResult> AtualizarUsuarioPorId([FromBody] UsuarioDTO usuarioDto)
+        {
+            if (usuarioDto is null || usuarioDto.Id <= 0) return BadRequest("Dados inválidos.");
+            
+            var response = await usuarioService.AtualizarUsuarioPorId(usuarioDto);
+
+            return Ok(response);
+        }
         [HttpPost("renova-token")]
         public async Task<ActionResult<LoginResponse>> RenovaToken(TokenRenovacaoDTO tokenRenovacao)
         {
@@ -43,7 +52,6 @@ namespace BinaryCupcake.Server.Controllers
             var resultadoToken = await usuarioService.GetRenovacaoToken(tokenRenovacao);
             return Ok(resultadoToken);
         }
-
         private string GetTokenHeader()
         {
             string token = string.Empty;

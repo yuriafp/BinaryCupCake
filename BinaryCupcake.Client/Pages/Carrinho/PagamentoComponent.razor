@@ -40,9 +40,9 @@
                                 }
                             </tbody>
                         </table>
-
+                        <p>Taxa de Entrega: <strong>R$ @Pedido.TaxaEntrega.ToString("N2")</strong></p>
                         <hr />
-                        <p><strong>Total: </strong> R$ @MeuCarrinhoPedido?.Sum(x => x.Total).ToString("N2")</p>
+                        <p><strong>Total: </strong> R$ @MeuCarrinhoPedido?.Sum(x => x.Total + Pedido.TaxaEntrega).ToString("N2")</p>
                     </div>
 
                     <!-- Botão para voltar à página inicial -->

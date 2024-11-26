@@ -96,7 +96,7 @@ namespace BinaryCupcake.Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Endereço")
+                    b.Property<string>("Endereco")
                         .HasColumnType("text");
 
                     b.Property<string>("Nome")

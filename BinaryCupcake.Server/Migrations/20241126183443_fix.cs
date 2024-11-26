@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BinaryCupcake.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class fix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,8 +84,7 @@ namespace BinaryCupcake.Server.Migrations
                     Nome = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Senha = table.Column<string>(type: "text", nullable: true),
-                    Endereço = table.Column<string>(type: "text", nullable: true),
-                    Cpf = table.Column<string>(type: "text", nullable: true)
+                    Endereco = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

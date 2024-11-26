@@ -7,5 +7,6 @@ namespace BinaryCupcake.Client.Services
     {
         Task<ServiceResponse> Registrar(UsuarioDTO usuario);
         Task<LoginResponse> Login(LoginDTO usuario);
+        Task<ServiceResponse>AtualizarUsuarioPorId(UsuarioDTO usuario);
     }
 }

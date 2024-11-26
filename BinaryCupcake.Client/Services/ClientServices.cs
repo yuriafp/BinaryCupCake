@@ -8,6 +8,7 @@ using BinaryCupcake.Client.PrivateModels;
 using Blazored.LocalStorage;
 using BinaryCupcake.Client.Models;
 using System.Reflection.Metadata;
+using System.Text;
 
 namespace BinaryCupcake.Client.Services
 {
@@ -86,6 +87,16 @@ namespace BinaryCupcake.Client.Services
 
             var apiResponse = await response.Content.ReadAsStringAsync();
             return DeserializeJsonString<LoginResponse>(apiResponse);
+        }
+
+        public async Task<ServiceResponse> AtualizarUsuarioPorId(UsuarioDTO usuario)
+        {
+            var response = await httpClient.PutAsync($"{AutenticacaoBaseUrl}/atualizar", GenerateStringContent(SerializeObj(usuario)));
+            
+            response.EnsureSuccessStatusCode();
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            return DeserializeJsonString<ServiceResponse>(apiResponse);
         }
         #endregion Autenticacao
         #region Carrinho
@@ -227,7 +238,9 @@ namespace BinaryCupcake.Client.Services
         private async Task SetCarrinhoLocalStorage(string carrinho) => await localStorageService.SetItemAsStringAsync("carrinho", carrinho);
         private async Task RemoveCarrinhoLocalStorage() => await localStorageService.RemoveItemAsync("carrinho");
 
-        
+       
+
+
         #endregion Carrinho
     }
 }

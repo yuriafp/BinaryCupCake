@@ -51,7 +51,8 @@ namespace BinaryCupcake.Server.Repositories
                 Email = buscaUsuario.Email,
                 Nome = buscaUsuario.Nome,
                 Permissao = tipoPermissao.Nome,
-                Endereco = buscaUsuario.Endereço
+                Endereco = buscaUsuario.Endereco,
+                Id = buscaUsuario.Id,
             };
         }
         public async Task<LoginResponse> Login(LoginDTO login)
@@ -122,6 +123,24 @@ namespace BinaryCupcake.Server.Repositories
                 await Commit();
             }
             return new ServiceResponse(true, "Conta criada com sucesso!");
+        }
+        public async Task<ServiceResponse> AtualizarUsuarioPorId(UsuarioDTO usuarioDto)
+        {
+            if (usuarioDto == null)
+                return new ServiceResponse(false, "Dados do usuário inválidos.");
+
+            var usuario = await appDbContext.Usuarios.FirstOrDefaultAsync(x => x.Id == usuarioDto.Id);
+
+            if (usuario is null) return new ServiceResponse(false, "Usuário não encontrado.");
+
+            usuario.Nome = usuarioDto.Nome ?? usuario.Nome;
+            usuario.Email = usuarioDto.Email ?? usuario.Email;
+            usuario.Endereco = usuarioDto.Endereco ?? usuario.Endereco;
+            usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuarioDto.Senha);
+            
+            await Commit();
+
+            return new ServiceResponse(true, "Usuário atualizado com sucesso.");
         }
         private async Task Commit() => await appDbContext.SaveChangesAsync();
         #region token
