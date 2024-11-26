@@ -18,10 +18,21 @@
                     <p>Taxa de Entrega: <strong>R$ @Pedido.TaxaEntrega.ToString("N2")</strong></p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-danger w-100" @onclick="Pagamento" disabled="@(MeuCarrinhoPedido == null || !MeuCarrinhoPedido.Any())">
-                        <i class="fa fa-cart-arrow-down"></i>
-                        Prosseguir para Pagamento
-                    </button>
+                    <AuthorizeView>
+                        <Authorized>
+                            <button class="btn btn-danger w-100" @onclick="Pagamento" disabled="@(MeuCarrinhoPedido == null || !MeuCarrinhoPedido.Any())">
+                                <i class="fa fa-cart-arrow-down"></i>
+                                Prosseguir para Pagamento
+                            </button>
+                        </Authorized>
+                        <NotAuthorized>
+                            <a href="/login" class="btn btn-primary w-100">
+                                <i class="fa fa-sign-in"></i>
+                                Fazer Login para Prosseguir
+                            </a>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                    
                 </div>
             </div>
         </div>
