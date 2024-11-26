@@ -35,7 +35,7 @@ namespace BinaryCupcake.Server.Repositories
 
         private async Task Commit() => await appDbContext.SaveChangesAsync();
 
-        public async Task<List<Produto>> ListaTodosProdutos(bool produtoDestacado)
+        public async Task<List<Produto>> ListaTodosProdutosPorDestaque(bool produtoDestacado)
         {
             if (produtoDestacado)
             {
@@ -45,6 +45,12 @@ namespace BinaryCupcake.Server.Repositories
             {
                 return await appDbContext.Produtos.Where(x => x.Destaque.Equals(produtoDestacado)).ToListAsync();
             }
+        }
+
+        public async Task<List<Produto>> ListaTodosProdutos()
+        {
+            var produtos = await appDbContext.Produtos.ToListAsync();
+            return produtos;
         }
     }
 }

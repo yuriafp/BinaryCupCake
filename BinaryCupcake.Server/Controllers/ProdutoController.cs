@@ -14,17 +14,24 @@ namespace BinaryCupcake.Server.Controllers
         {
             this.produtoService = produtoService;
         }
-        [HttpGet]
-        public async Task<ActionResult<List<Produto>>> ListaTodosProdutos(bool destacado)
+        [HttpGet("produtos-destaque")]
+        public async Task<ActionResult<List<Produto>>> ListaTodosProdutosPorDestaque(bool destacado)
         {
-            var produto = await produtoService.ListaTodosProdutos(destacado); return Ok(produto);
+            var produto = await produtoService.ListaTodosProdutosPorDestaque(destacado); return Ok(produto);
         }
-        [HttpPost]
+        [HttpPost("add-produto")]
         public async Task<ActionResult<ServiceResponse>> AddProduto(Produto produto)
         {
             if (produto is null) return  BadRequest("O produto não pode ser nulo.");
             var response = await produtoService.AddProduto(produto);
             return Ok(response);
+        }
+
+        [HttpGet("todos-produtos")]
+        public async Task<ActionResult<List<Produto>>> ListaTodosProdutos()
+        {
+            var produto = await produtoService.ListaTodosProdutos();
+            return Ok(produto);
         }
     }
 }

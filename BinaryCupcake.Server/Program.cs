@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("ConnectionString não encontrada."));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Prod") ?? throw new InvalidOperationException("ConnectionString não encontrada."));
 });
 
 builder.Services.AddScoped<IProduto, ProdutoRepository>();

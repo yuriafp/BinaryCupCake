@@ -6,6 +6,7 @@ namespace BinaryCupcake.Client.Services
     public interface IProdutoService
     {
         Task<ServiceResponse> AddProduto(Produto produto);
-        Task<List <Produto>> ListaTodosProdutos(bool produtoDestacado);
+        Task<List <Produto>> ListaTodosProdutosPorDestaque(bool produtoDestacado);
+        Task<List<Produto>> ListaTodosProdutos();
     }
 }

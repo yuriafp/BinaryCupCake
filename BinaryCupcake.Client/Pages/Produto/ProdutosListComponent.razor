@@ -59,31 +59,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await RecuperaTodosProdutos();
         carregando = false;
-    }
-
-    private async Task RecuperaTodosProdutos()
-    {
-        ListaTodosProdutos?.Clear();
-
-        var produtosDestacadosTask = ClientService.ListaTodosProdutos(true);
-        var produtosNaoDestacadosTask = ClientService.ListaTodosProdutos(false);
-
-        await Task.WhenAll(produtosDestacadosTask, produtosNaoDestacadosTask);
-
-        var produtosDestacados = await produtosDestacadosTask;
-        var produtosNaoDestacados = await produtosNaoDestacadosTask;
-
-        if (produtosDestacados != null && produtosDestacados.Any())
-        {
-            ListaTodosProdutos?.AddRange(produtosDestacados);
-        }
-
-        if (produtosNaoDestacados != null && produtosNaoDestacados.Any())
-        {
-            ListaTodosProdutos?.AddRange(produtosNaoDestacados);
-        }
+        ListaTodosProdutos = await ClientService.ListaTodosProdutos();
     }
 
     string GetDescricao(string descricao)
@@ -100,6 +77,5 @@
         }
 
         var response = await carrinhoService.AddCarrinho(produto, quantidade);
-        
     }
 }

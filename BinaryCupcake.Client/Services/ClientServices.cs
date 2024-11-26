@@ -45,7 +45,7 @@ namespace BinaryCupcake.Client.Services
             if (usuario.Permissao!.Equals("Admin"))
             {
 
-                var response = await privateHttpClient.PostAsync(BaseUrl, GenerateStringContent(SerializeObj(produto)));
+                var response = await privateHttpClient.PostAsync($"{BaseUrl}/add-produto", GenerateStringContent(SerializeObj(produto)));
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -58,15 +58,23 @@ namespace BinaryCupcake.Client.Services
             return new ServiceResponse(false, "Usuário sem permissão para essa ação!");
         }
 
-        public async Task<List<Produto>> ListaTodosProdutos(bool produtoDestacado)
+        public async Task<List<Produto>> ListaTodosProdutosPorDestaque(bool produtoDestacado)
         {
-            var response = await httpClient.GetAsync($"{BaseUrl}?destacado={produtoDestacado}");
+            var response = await httpClient.GetAsync($"{BaseUrl}/produtos-destaque?destacado={produtoDestacado}");
+
             if (!response.IsSuccessStatusCode) return null;
 
             var resultado = await response.Content.ReadAsStringAsync();
             return [.. DeserializeJsonStringList<Produto>(resultado)];
+        }
 
+        public async Task<List<Produto>> ListaTodosProdutos()
+        {
+            var response = await httpClient.GetAsync($"{BaseUrl}/todos-produtos");
+            if (!response.IsSuccessStatusCode) return null;
 
+            var resultado = await response.Content.ReadAsStringAsync();
+            return [.. DeserializeJsonStringList<Produto>(resultado)];
         }
         #endregion Produto
         #region Autenticacao
@@ -173,8 +181,8 @@ namespace BinaryCupcake.Client.Services
 
             var meuCarrinhoList = JsonContentService.DeserializeJsonStringList<CarrinhoArmazenamento>(meuCarrinhoString);
 
-            var produtosDestacadosTask = ListaTodosProdutos(true);
-            var produtosNaoDestacadosTask = ListaTodosProdutos(false);
+            var produtosDestacadosTask = ListaTodosProdutosPorDestaque(true);
+            var produtosNaoDestacadosTask = ListaTodosProdutosPorDestaque(false);
             await Task.WhenAll(produtosDestacadosTask, produtosNaoDestacadosTask);
 
             var todosProdutos = (await produtosDestacadosTask).Concat(await produtosNaoDestacadosTask).ToList();
@@ -222,7 +230,9 @@ namespace BinaryCupcake.Client.Services
         private async Task SetCarrinhoLocalStorage(string carrinho) => await localStorageService.SetItemAsStringAsync("carrinho", carrinho);
         private async Task RemoveCarrinhoLocalStorage() => await localStorageService.RemoveItemAsync("carrinho");
 
-       
+      
+
+
 
 
         #endregion Carrinho

@@ -90,7 +90,7 @@
         ListaProdutoDestacado?.Clear();
         bool produtoDestacado = true;
 
-        var response = await ClientService.ListaTodosProdutos(produtoDestacado);
+        var response = await ClientService.ListaTodosProdutosPorDestaque(produtoDestacado);
         if (response is null) return;
 
         foreach (var produto in response)
