@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "BinaryCupcake.Client",
   "resources": {
-    "hash": "sha256-y4r468G4081Eyco8UsVH3fS2/RGQ5VdlScA+dAY7vHo=",
+    "hash": "sha256-+ZeCQs0PzoveS5mlqgmFkmfQuCfbW2kCscfAVj2fv6Y=",
     "jsModuleNative": {
       "dotnet.native.8.0.11.n1sf6xr5tz.js": "sha256-VdKq87/z5NIxZKmuM+fv38XF+RcEb/bg3jVBwQSfwP4="
     },
@@ -17,8 +17,8 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "BinaryCupcake.Client.wasm": "sha256-tI26KQ7qxhrYZaOFColtmCkl6wY5UnL1gzoaWx954s8=",
-      "BinaryCupcake.SharedLibrary.wasm": "sha256-Iwr+tLpiS2PrYDFHzjMfQWDNM8Zk3UtfhfQ+WF7O/4c=",
+      "BinaryCupcake.Client.wasm": "sha256-jv8W8NFdGbb4rImzoVvUIvX266QCrxF8qDm4ulID2y8=",
+      "BinaryCupcake.SharedLibrary.wasm": "sha256-v9v+L6Frr6Zv0CbOZie9vP6e8hCU2UwlzNkuNEHczu8=",
       "Blazored.LocalStorage.wasm": "sha256-xHBGFCMjDjvvTwtMvgaMBNmQk9JdVhGmws2/GMZlxrI=",
       "Microsoft.AspNetCore.Authorization.wasm": "sha256-TXs+MpElGDjgqiBeIxMXMYMCVm0P64rDfQcU000/x18=",
       "Microsoft.AspNetCore.Components.Authorization.wasm": "sha256-MdNVgc0cubEGKl8xL3P9ybipvFSaVaaYPYL5BRbl1no=",
@@ -83,7 +83,7 @@
       "System.Net.WebClient.wasm": "sha256-nmKvaQkG2ZaSzFk9/OgC+Aadci5eW+FBD4oH6pM8s2Y=",
       "System.Net.WebHeaderCollection.wasm": "sha256-PiUY8Tk6IIjWnN5yURp8afbrAL0GDc93j0R7phkFZAg=",
       "System.ObjectModel.wasm": "sha256-4XAW9xOpqatRDC7GmjvlzPdVnhiXRZUjF4ihyhv3B3I=",
-      "System.Private.CoreLib.wasm": "sha256-7zSoluxn4v5wCEeYH5jQBE8jL+0MGaUO2d2O73XEN5g=",
+      "System.Private.CoreLib.wasm": "sha256-6081lOZ5bQ3axB7MRoxzyXhMoMHFjn9lVORpHt/uLdU=",
       "System.Private.DataContractSerialization.wasm": "sha256-ovvpHXq8gCnNEtrBLvUBwn2WCWZgcQjENHs4POMHVsQ=",
       "System.Private.Uri.wasm": "sha256-psitBCZloNqbnTa8QTtu2UkMyYbGMfAMzCjyDYceKlA=",
       "System.Private.Xml.Linq.wasm": "sha256-h5bN+UZQctzsIn5kwcIOZn8hOSISQvyTLJqqsrXfAfE=",
