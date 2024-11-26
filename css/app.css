@@ -150,5 +150,26 @@ $styleCursor {
 }
 
 .custom-bg {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  Sombra suave 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    border-radius: 20px;
+}
+
+table th, table td {
+    vertical-align: middle;
+}
+
+.btn-danger {
+    border-radius: 20px;
+}
+
+input[type="number"] {
+    max-width: 80px;
 }
