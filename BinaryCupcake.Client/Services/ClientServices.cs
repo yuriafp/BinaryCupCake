@@ -181,11 +181,7 @@ namespace BinaryCupcake.Client.Services
 
             var meuCarrinhoList = JsonContentService.DeserializeJsonStringList<CarrinhoArmazenamento>(meuCarrinhoString);
 
-            var produtosDestacadosTask = ListaTodosProdutosPorDestaque(true);
-            var produtosNaoDestacadosTask = ListaTodosProdutosPorDestaque(false);
-            await Task.WhenAll(produtosDestacadosTask, produtosNaoDestacadosTask);
-
-            var todosProdutos = (await produtosDestacadosTask).Concat(await produtosNaoDestacadosTask).ToList();
+            var todosProdutos = await ListaTodosProdutos();
 
             foreach (var itemCarrinho in meuCarrinhoList)
             {

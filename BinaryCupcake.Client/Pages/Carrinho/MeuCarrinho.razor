@@ -95,7 +95,8 @@
     {
         MeuCarrinhoPedido = await carrinhoService.MeusPedidos();
         var usuario = await autenticacaoService.GetDetalhesUsuario();
-        endereco = usuario.Endereco;
+
+        endereco = string.IsNullOrWhiteSpace(usuario?.Endereco) ? "Endereço não informado" : usuario.Endereco;
     }
 
     async Task TrataManipulacaoCarrinho(Microsoft.AspNetCore.Components.ChangeEventArgs e, Pedido pedido)
