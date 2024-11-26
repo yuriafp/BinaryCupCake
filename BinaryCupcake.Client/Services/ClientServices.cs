@@ -102,9 +102,7 @@ namespace BinaryCupcake.Client.Services
         #region Carrinho
         public async Task GetCarrinhoContador()
         {
-            try
-            {
-                string carrinhoString = await GetCarrinhoLocalStorage();
+              string carrinhoString = await GetCarrinhoLocalStorage();
 
                 if (string.IsNullOrEmpty(carrinhoString))
                 {
@@ -115,35 +113,25 @@ namespace BinaryCupcake.Client.Services
                     using var document = JsonDocument.Parse(carrinhoString);
                     CarrinhoContador = document.RootElement.GetArrayLength();
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao obter contador do carrinho: {ex.Message}");
-                CarrinhoContador = 0;
-            }
 
             CarrinhoAction?.Invoke();
         }
 
         public async Task<ServiceResponse> AddCarrinho(Produto produto, int quantidade = 1)
         {
-            // Garantir que a quantidade seja pelo menos 1
             quantidade = Math.Max(quantidade, 1);
 
             string mensagem;
             var meuCarrinho = new List<CarrinhoArmazenamento>();
             var buscaCarrinhoStorage = await GetCarrinhoLocalStorage();
 
-            // Verifica se já existe um carrinho no localStorage
             if (!string.IsNullOrEmpty(buscaCarrinhoStorage))
             {
                 meuCarrinho = (List<CarrinhoArmazenamento>)JsonContentService.DeserializeJsonStringList<CarrinhoArmazenamento>(buscaCarrinhoStorage);
 
-                // Verifica se o produto já foi adicionado ao carrinho
                 var verificaSeAdicionado = meuCarrinho.FirstOrDefault(x => x.ProdutoId == produto.Id);
                 if (verificaSeAdicionado is null)
                 {
-                    // Produto não encontrado no carrinho, adiciona novo item
                     meuCarrinho.Add(new CarrinhoArmazenamento()
                     {
                         ProdutoId = produto.Id,
@@ -153,14 +141,12 @@ namespace BinaryCupcake.Client.Services
                 }
                 else
                 {
-                    // Produto encontrado, substitui a quantidade
-                    verificaSeAdicionado.Quantidade = quantidade; // Substituindo a quantidade
+                    verificaSeAdicionado.Quantidade = quantidade;
                     mensagem = "Quantidade do produto atualizada no carrinho!";
                 }
             }
             else
             {
-                // Carrinho vazio, adiciona o primeiro produto
                 meuCarrinho.Add(new CarrinhoArmazenamento()
                 {
                     ProdutoId = produto.Id,
@@ -169,7 +155,6 @@ namespace BinaryCupcake.Client.Services
                 mensagem = "Produto adicionado ao carrinho!";
             }
 
-            // Atualiza o localStorage com o carrinho atualizado
             await RemoveCarrinhoLocalStorage();
             await SetCarrinhoLocalStorage(JsonContentService.SerializeObj(meuCarrinho));
             await GetCarrinhoContador();
@@ -192,7 +177,6 @@ namespace BinaryCupcake.Client.Services
             var produtosNaoDestacadosTask = ListaTodosProdutos(false);
             await Task.WhenAll(produtosDestacadosTask, produtosNaoDestacadosTask);
 
-            // Combina os produtos em uma única lista
             var todosProdutos = (await produtosDestacadosTask).Concat(await produtosNaoDestacadosTask).ToList();
 
             foreach (var itemCarrinho in meuCarrinhoList)

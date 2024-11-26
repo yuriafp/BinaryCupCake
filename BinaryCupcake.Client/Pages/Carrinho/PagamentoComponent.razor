@@ -14,7 +14,6 @@
                     <p class="lead">Seu pagamento foi realizado com sucesso.</p>
                     <p>Agradecemos pela sua compra! Aqui estão os detalhes do seu pedido:</p>
 
-                    <!-- Detalhes do Pedido -->
                     <div class="mb-4">
                         <h5>Detalhes do Pedido</h5>
                         <table class="table table-striped">
@@ -45,7 +44,6 @@
                         <p><strong>Total: </strong> R$ @MeuCarrinhoPedido?.Sum(x => x.Total + Pedido.TaxaEntrega).ToString("N2")</p>
                     </div>
 
-                    <!-- Botão para voltar à página inicial -->
                     <button class="btn btn-primary" @onclick="VoltarParaHome">
                         Voltar para a Home
                     </button>
@@ -55,34 +53,16 @@
     </div>
 </div>
 
-<style>
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-primary {
-        border-radius: 20px;
-    }
-
-    table th, table td {
-        vertical-align: middle;
-    }
-</style>
-
 @code {
-    // Exemplo de carrinho, pode ser injetado ou recuperado do serviço
     List<Pedido> MeuCarrinhoPedido = new();
 
     protected async override Task OnInitializedAsync()
     {
-        // Aqui você recupera o carrinho do serviço ou qualquer fonte de dados que você use
         MeuCarrinhoPedido = await carrinhoService.MeusPedidos();
     }
 
     private void VoltarParaHome()
     {
-        // Redireciona para a página inicial ou para outra rota desejada
         NavigationManager.NavigateTo("/");
     }
 }

@@ -1,4 +1,5 @@
-﻿
+﻿@inject NavigationManager NavManager
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light custom-bg">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,9 +19,7 @@
             </ul>
         </div>
     </div>
-    <!-- Dropdown de usuário à direita -->
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="font-family:'Roboto'">
-        <!-- Link da marca/carrinho à esquerda -->
         <a class="navbar-brand" href="/carrinho">
             <i class="fa fa-cart-shopping fs-6 text-dark"></i>
             <span class="small text-danger fw-bold">@carrinhoService.CarrinhoContador</span>
@@ -34,7 +33,6 @@
             </AuthorizeView>
         </a>
 
-
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person fs-6"></i>
@@ -42,7 +40,6 @@
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <AuthorizeView>
-                    <!-- Se o usuário está autenticado -->
                     <Authorized>
                         @if (context.User.IsInRole("Admin"))
                         {
@@ -53,19 +50,15 @@
                         <li><a class="dropdown-item fs-6" @onclick="()=> Logout()">Sair</a></li>
                     </Authorized>
 
-                    <!-- Se o usuário não está autenticado -->
                     <NotAuthorized>
                         <li><a class="dropdown-item fs-6" @onclick="()=> NavManager.NavigateTo(login)">Login</a></li>
                         <li><a class="dropdown-item fs-6" @onclick="()=> NavManager.NavigateTo(registrar)">Registrar</a></li>
                     </NotAuthorized>
-
-
                 </AuthorizeView>
             </ul>
         </li>
     </ul>
 </nav>
-
 
 @code {
     public string login = "/login";
@@ -75,7 +68,21 @@
     private async Task Logout()
     {
         await js.InvokeVoidAsync("logout");
-
         NavManager.NavigateTo("/", forceLoad: true);
+    }
+
+    protected override void OnInitialized()
+    {
+        carrinhoService.CarrinhoAction = AtualizarCarrinho;
+    }
+
+    private void AtualizarCarrinho()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        carrinhoService.CarrinhoAction = null;
     }
 }

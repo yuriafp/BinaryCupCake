@@ -39,7 +39,6 @@
 
                             <div class="d-flex justify-content-around mt-2">
                                 <a href="/detalhes-produto/@produto.Id" class="btn btn-primary btn-sm w-100" style="margin-right: 5px;">Mais detalhes</a>
-                                @* <button class="btn btn-outline-dark btn-sm w-100" onclick="@AddCarrinho(produto)">Adicionar</button> *@
                                 <button class="btn btn-outline-dark btn-sm w-100" @onclick="() => AddCarrinho(produto, 1)">Adicionar</button>
                             </div>
                         </div>
@@ -71,20 +70,16 @@
         var produtosDestacadosTask = ClientService.ListaTodosProdutos(true);
         var produtosNaoDestacadosTask = ClientService.ListaTodosProdutos(false);
 
-        // Aguarda ambas as requisições completarem
         await Task.WhenAll(produtosDestacadosTask, produtosNaoDestacadosTask);
 
-        // Obtém as listas retornadas pelas tarefas
         var produtosDestacados = await produtosDestacadosTask;
         var produtosNaoDestacados = await produtosNaoDestacadosTask;
 
-        // Adiciona os produtos destacados à lista, se houver
         if (produtosDestacados != null && produtosDestacados.Any())
         {
             ListaTodosProdutos?.AddRange(produtosDestacados);
         }
 
-        // Adiciona os produtos não destacados à lista, se houver
         if (produtosNaoDestacados != null && produtosNaoDestacados.Any())
         {
             ListaTodosProdutos?.AddRange(produtosNaoDestacados);

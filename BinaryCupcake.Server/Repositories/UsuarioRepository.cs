@@ -18,7 +18,6 @@ namespace BinaryCupcake.Server.Repositories
             var buscaToken = await appDbContext.TokenInfo.FirstOrDefaultAsync(x => x.TokenRenovacao!.Equals(tokenCodificado));
             if (buscaToken is null) return null!;
 
-            //gerar novo token
             var (novoTokenAcesso, novoTokenRenovacao) = await GerarTokens();
 
             await SalvarToken(buscaToken.UsuarioId, novoTokenAcesso, novoTokenRenovacao);
@@ -29,7 +28,7 @@ namespace BinaryCupcake.Server.Repositories
         {
             if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
             {
-                token = token.Substring(7); // Remover "Bearer " (7 caracteres)
+                token = token.Substring(7);
             }
 
             var resultado = await appDbContext.TokenInfo.FirstOrDefaultAsync(x => x.TokenAcesso!.Equals(token));
@@ -65,7 +64,6 @@ namespace BinaryCupcake.Server.Repositories
 
             if (!BCrypt.Net.BCrypt.Verify(login!.Senha, buscaUsuario.Senha)) return new LoginResponse(false, "Login ou senha inválidos!");
 
-            //gerar tokens
             var (tokenAcesso, TokenRenovacao) = await GerarTokens();
 
             await SalvarToken(buscaUsuario.Id, tokenAcesso, TokenRenovacao);
@@ -89,7 +87,6 @@ namespace BinaryCupcake.Server.Repositories
 
             await Commit();
 
-            //permissão de adm
             var VerificaSePermissaoAdm = await appDbContext.PermissaoSistema.FirstOrDefaultAsync(x => x.Nome!.ToLower().Equals("admin"));
 
             if (VerificaSePermissaoAdm is null)

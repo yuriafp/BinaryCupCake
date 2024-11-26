@@ -36,15 +36,15 @@ namespace BinaryCupcake.Server.Repositories
             {
                 PriceData = new SessionLineItemPriceDataOptions
                 {
-                    UnitAmountDecimal = Pedido.TaxaEntrega * 100, // Taxa de entrega em centavos
+                    UnitAmountDecimal = Pedido.TaxaEntrega * 100, 
                     Currency = "brl",
                     ProductData = new SessionLineItemPriceDataProductDataOptions
                     {
-                        Name = "Taxa de entrega", // Nome do item de taxa de entrega
+                        Name = "Taxa de entrega",
                         Description = "Entrega do pedido"
                     }
                 },
-                Quantity = 1 // Apenas 1 vez
+                Quantity = 1
             };
 
             itensDeLinha.Add(taxaDeEntregaItem);

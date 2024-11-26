@@ -1,6 +1,6 @@
 using BinaryCupcake.Client;
 using BinaryCupcake.Client.Autenticacao;
-using BinaryCupcake.Client.Pages.Others;
+using BinaryCupcake.Client.Pages.Outros;
 using BinaryCupcake.Client.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,7 +13,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Registrar a licença do Syncfusion
 SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF5cXmVCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWH5fcnVRQ2VdUUB+WUQ=");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

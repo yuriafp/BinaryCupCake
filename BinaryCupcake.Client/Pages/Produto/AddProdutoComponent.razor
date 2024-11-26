@@ -2,80 +2,81 @@
 @inject IJSRuntime js
 @inject AutenticacaoService autenticacaoService
 
-@if (verificaPermissaoAdm)
-{
-    <div class="container-fluid">
-        <div></div>
-        <div class="row container-fluid justify-content-center">
-            <div class="col-md-6">
-                <EditForm Model="MeuProduto" Enhance OnValidSubmit="SalvarProduto">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="card">
-                        <div class="card-header" align="center">Adicionar Produto</div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label">Nome:</label>
-                                <InputText @bind-Value="MeuProduto.Nome" class="form-control"></InputText>
-                            </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">Preço:</label>
-                                <InputNumber @bind-Value="MeuProduto.Preco" class="form-control"></InputNumber>
-                            </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">Quantidade:</label>
-                                <InputNumber @bind-Value="MeuProduto.Quantidade" class="form-control"></InputNumber>
-                            </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">Descrição:</label>
-                                <InputTextArea @bind-Value="MeuProduto.Descricao" class="form-control"></InputTextArea>
-                            </div>
-                            <div class="form-group mt-3">
-                                <div class="form-check">
-                                    <label class="form-label text-end">Produto em destaque</label>
-                                    <InputCheckbox @bind-Value="MeuProduto.Destaque" class="form-check-input" />
+
+<AuthorizeView>
+    <Authorized Context="adminContext">
+        @if (adminContext.User.IsInRole("Admin"))
+        {
+            <div class="container-fluid">
+                <div></div>
+                <div class="row container-fluid justify-content-center">
+                    <div class="col-md-6">
+                        <EditForm Model="MeuProduto" EnhanOnValidSubmit="SalvarProduto">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="card">
+                                <div class="card-header" align="center">Adicionar Produto</div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="form-label">Nome:</label>
+                                        <InputText @bind-Value="MeuProduto.Nome" class="form-control"></InputText>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label class="form-label">Preço:</label>
+                                        <InputNumber @bind-Value="MeuProduto.Preco" class="form-control"></InputNumber>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label class="form-label">Quantidade:</label>
+                                        <InputNumber @bind-Value="MeuProduto.Quantidade" class="form-control"></InputNumber>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label class="form-label">Descrição:</label>
+                                        <InputTextArea @bind-Value="MeuProduto.Descricao" class="form-control"></InputTextArea>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <div class="form-check">
+                                            <label class="form-label text-end">Produto em destaque</label>
+                                            <InputCheckbox @bind-Value="MeuProduto.Destaque" class="form-check-input" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label class="form-label @(ImageUploadMessage==""?"":"text-danger")">
+                                            @(ImageUploadMessage == "" ? "Carregar Imagem:" : ImageUploadMessage)
+                                        </label>
+                                        <InputFile class="form-control" OnChange="UploadImagem"></InputFile>
+                                    </div>
+                                </div>
+                                <div class="card-footer" align="center">
+                                    <div class="form-group mt-3">
+                                        @if (MostrarBtnSalvar)
+                                        {
+                                            <button class="btn btn-outline-primary" type="submit"><i class="fa fa-plus"></i> Salvar Produto</button>
+                                        }
+                                        <BtnOcupadoComponent MostrarBtnOcupado="MostrarBtnOcupado"></BtnOcupadoComponent>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label @(ImageUploadMessage==""?"":"text-danger")">
-                                    @(ImageUploadMessage == "" ? "Carregar Imagem:" : ImageUploadMessage)
-                                </label>
-                                <InputFile class="form-control" OnChange="UploadImagem"></InputFile>
-                            </div>
-                        </div>
-                        <div class="card-footer" align="center">
-                            <div class="form-group mt-3">
-                                @if (MostrarBtnSalvar)
-                                {
-                                    <button class="btn btn-outline-primary" type="submit"><i class="fa fa-plus"></i> Salvar Produto</button>
-                                }
-                                <BtnOcupadoComponent MostrarBtnOcupado="MostrarBtnOcupado"></BtnOcupadoComponent>
-                            </div>
-                        </div>
+                        </EditForm>
                     </div>
-                </EditForm>
+                </div>
             </div>
+        }
+    </Authorized>
+
+    <NotAuthorized>
+        <div class="container text-center">
+            <p>Você não tem permissão para acessar esta página.</p>
         </div>
-    </div>
-}
-else
-{
-    <div class="container">
-        <p>Você não tem permissão para acessar esta página.</p>
-    </div>
-}
+    </NotAuthorized>
+</AuthorizeView>
+
 
 <MessageDialog @ref="messageDialog"></MessageDialog>
 
 @code {
     Produto MeuProduto = new();
     string ImageUploadMessage = "";
-
-    protected override async Task OnInitializedAsync()
-    {
-        await ValidaUsuarioPermissao();
-    }
-
+ 
     async Task SalvarProduto()
     {
         MostrarBtnSalvar = false;
@@ -127,15 +128,5 @@ else
         MostrarBtnOcupado = false;
         MostrarBtnSalvar = !MostrarBtnOcupado;
         StateHasChanged();
-    }
-
-    public async Task ValidaUsuarioPermissao()
-    {
-        var SessaoUsuario = await autenticacaoService.GetDetalhesUsuario();
-
-        if (SessaoUsuario is not null && SessaoUsuario.Permissao.Equals("Admin"))
-            verificaPermissaoAdm = true;
-        else
-            verificaPermissaoAdm = false;
     }
 }
