@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "BinaryCupcake.Client",
   "resources": {
-    "hash": "sha256-C7l2c1eI/BZUYeXAprf4oU0cNkq8kQ3ZrceHopGsoX4=",
+    "hash": "sha256-y4r468G4081Eyco8UsVH3fS2/RGQ5VdlScA+dAY7vHo=",
     "jsModuleNative": {
       "dotnet.native.8.0.11.n1sf6xr5tz.js": "sha256-VdKq87/z5NIxZKmuM+fv38XF+RcEb/bg3jVBwQSfwP4="
     },
@@ -17,8 +17,8 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "BinaryCupcake.Client.wasm": "sha256-3jpxdCLBLsOuXB1ft87dnJytEpZj0+ah6dD7WeBONkA=",
-      "BinaryCupcake.SharedLibrary.wasm": "sha256-ot2nOMhJ2uj5oR5ilIU4Kd+O4GlPJZFuquojwPCtJ4M=",
+      "BinaryCupcake.Client.wasm": "sha256-tI26KQ7qxhrYZaOFColtmCkl6wY5UnL1gzoaWx954s8=",
+      "BinaryCupcake.SharedLibrary.wasm": "sha256-Iwr+tLpiS2PrYDFHzjMfQWDNM8Zk3UtfhfQ+WF7O/4c=",
       "Blazored.LocalStorage.wasm": "sha256-xHBGFCMjDjvvTwtMvgaMBNmQk9JdVhGmws2/GMZlxrI=",
       "Microsoft.AspNetCore.Authorization.wasm": "sha256-TXs+MpElGDjgqiBeIxMXMYMCVm0P64rDfQcU000/x18=",
       "Microsoft.AspNetCore.Components.Authorization.wasm": "sha256-MdNVgc0cubEGKl8xL3P9ybipvFSaVaaYPYL5BRbl1no=",
