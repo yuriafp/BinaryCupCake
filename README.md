@@ -23,7 +23,7 @@ Entre em contato: yuri13_yuri@hotmail.com
 ## 🛠️ Como executar o projeto
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/usuario/repositorio.git](https://github.com/yuriafp/BinaryCupCake.git
+   git clone https://github.com/yuriafp/BinaryCupCake.git
    ```
 2. Navegue para o diretório do projeto:
    ```bash
