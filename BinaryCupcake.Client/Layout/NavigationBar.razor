@@ -63,11 +63,10 @@
 @code {
     public string login = "/login";
     public string registrar = "/registrar";
-    public string logout = "/logout";
 
     private async Task Logout()
     {
-        await js.InvokeVoidAsync("logout");
+        await autenticacaoService.RemoveTokenLocalStorage();
         NavManager.NavigateTo("/", forceLoad: true);
     }
 
