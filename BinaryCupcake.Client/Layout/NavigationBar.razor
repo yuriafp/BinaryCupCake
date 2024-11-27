@@ -43,8 +43,12 @@
                     <Authorized>
                         @if (context.User.IsInRole("Admin"))
                         {
+                            <li><span class="dropdown-header fs-6 text-center">Gestão</span></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item fs-6" href="/add-produto">Adicionar Produtos</a></li>
+                            <li><a class="dropdown-item fs-6" href="/remover-produto">Remover Produtos</a></li>
                         }
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item fs-6" href="/perfil">Meu Perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item fs-6" @onclick="()=> Logout()">Sair</a></li>

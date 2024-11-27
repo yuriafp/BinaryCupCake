@@ -22,7 +22,7 @@ namespace BinaryCupcake.Server.Controllers
         [HttpPost("add-produto")]
         public async Task<ActionResult<ServiceResponse>> AddProduto(Produto produto)
         {
-            if (produto is null) return  BadRequest("O produto não pode ser nulo.");
+            if (produto is null) return BadRequest("O produto não pode ser nulo.");
             var response = await produtoService.AddProduto(produto);
             return Ok(response);
         }
@@ -32,6 +32,26 @@ namespace BinaryCupcake.Server.Controllers
         {
             var produto = await produtoService.ListaTodosProdutos();
             return Ok(produto);
+        }
+
+        [HttpDelete("remover-produto")]
+        public async Task<ActionResult> RemoverProduto(int produtoId)
+        {
+            if (produtoId == 0) return BadRequest("O produto não pode ser nulo.");
+
+            var response = await produtoService.RemoverProduto(produtoId);
+
+            return Ok(response);
+        }
+
+        [HttpGet("produto/{produtoId}")]
+        public async Task<ActionResult> ObterProdutoPorId(int produtoId)
+        {
+            if (produtoId == 0) return BadRequest("O produto não pode ser nulo.");
+
+            var response = await produtoService.ObterProdutoPorId(produtoId);
+
+            return Ok(response);
         }
     }
 }

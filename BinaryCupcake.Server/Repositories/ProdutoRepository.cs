@@ -52,5 +52,27 @@ namespace BinaryCupcake.Server.Repositories
             var produtos = await appDbContext.Produtos.ToListAsync();
             return produtos;
         }
+
+        public async Task<ServiceResponse> RemoverProduto(int produtoId)
+        {
+            var produto = await appDbContext.Produtos.FirstOrDefaultAsync(x => x.Id == produtoId);
+
+            if (produto is null) return new ServiceResponse(false, "Produto não encontrado!");
+
+            appDbContext.Remove(produto);
+
+            await Commit();
+
+            return new ServiceResponse(true, "Produto removido com sucesso!");
+        }
+
+        public async Task<Produto> ObterProdutoPorId(int produtoId)
+        {
+            var produto = await appDbContext.Produtos.FirstOrDefaultAsync(x => x.Id == produtoId);
+
+            if (produto is null) return null;
+
+            return produto;
+        }
     }
 }

@@ -4,6 +4,16 @@
 @using BinaryCupcake.SharedLibrary.Responses
 @inject AutenticacaoService autenticacaoService
 
+
+@if (carregando)
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+}
+else{
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3">
@@ -96,11 +106,12 @@
         </div>
     </div>
 </div>
-
+}
 
 @code {
     List<Pedido> MeuCarrinhoPedido = new();
     private string endereco = string.Empty;
+    private bool carregando = true;
 
     protected async override Task OnInitializedAsync()
     {
@@ -108,6 +119,8 @@
         var usuario = await autenticacaoService.GetDetalhesUsuario();
 
         endereco = string.IsNullOrWhiteSpace(usuario?.Endereco) ? "Endereço não informado" : usuario.Endereco;
+
+        carregando = false;
     }
 
     async Task TrataManipulacaoCarrinho(Microsoft.AspNetCore.Components.ChangeEventArgs e, Pedido pedido)

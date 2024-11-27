@@ -64,8 +64,8 @@ namespace BinaryCupcake.Client.Services
 
             if (!response.IsSuccessStatusCode) return null;
 
-            var resultado = await response.Content.ReadAsStringAsync();
-            return [.. DeserializeJsonStringList<Produto>(resultado)];
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            return [.. DeserializeJsonStringList<Produto>(apiResponse)];
         }
 
         public async Task<List<Produto>> ListaTodosProdutos()
@@ -73,9 +73,35 @@ namespace BinaryCupcake.Client.Services
             var response = await httpClient.GetAsync($"{BaseUrl}/todos-produtos");
             if (!response.IsSuccessStatusCode) return null;
 
-            var resultado = await response.Content.ReadAsStringAsync();
-            return [.. DeserializeJsonStringList<Produto>(resultado)];
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            return [.. DeserializeJsonStringList<Produto>(apiResponse)];
         }
+
+        public async Task<ServiceResponse> RemoverProduto(int produtoId)
+        {
+            var response = await httpClient.DeleteAsync($"{BaseUrl}/remover-produto?produtoId={produtoId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new ServiceResponse(false, "Um erro ocorreu. Tente novamente mais tarde.");
+            }
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            return DeserializeJsonString<ServiceResponse>(apiResponse);
+
+        }
+
+        public async Task<Produto> ObterProdutoPorId(int produtoId)
+        {
+            var response = await httpClient.GetAsync($"{BaseUrl}/produto/{produtoId}");
+
+            if (!response.IsSuccessStatusCode) return null;
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            return DeserializeJsonString<Produto>(apiResponse);
+
+        }
+
         #endregion Produto
         #region Autenticacao
         public async Task<ServiceResponse> Registrar(UsuarioDTO usuario)

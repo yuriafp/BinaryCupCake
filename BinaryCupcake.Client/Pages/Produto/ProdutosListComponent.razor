@@ -38,7 +38,7 @@
                             </p>
 
                             <div class="d-flex justify-content-around mt-2">
-                                <a href="/detalhes-produto/@produto.Id" class="btn btn-primary btn-sm w-100" style="margin-right: 5px;">Mais detalhes</a>
+                                <a href="/detalhes-produto/@produto.Id" class="btn btn-dark btn-sm w-100" style="margin-right: 5px;">Mais detalhes</a>
                                 <button class="btn btn-outline-dark btn-sm w-100" @onclick="() => AddCarrinho(produto, 1)">Adicionar</button>
                             </div>
                         </div>
@@ -54,13 +54,13 @@
 </div>
 
 @code {
-    List<Produto>? ListaTodosProdutos = new();
-    bool carregando = true;
+    private List<Produto>? ListaTodosProdutos = new();
+    private bool carregando = true;
 
     protected override async Task OnInitializedAsync()
     {
-        carregando = false;
         ListaTodosProdutos = await ClientService.ListaTodosProdutos();
+        carregando = false;
     }
 
     string GetDescricao(string descricao)
