@@ -1,10 +1,9 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-  <main>
-      <NavigationBar></NavigationBar>
-      <article class="content px-4">
-          @Body
-      </article>
-  </main>
-    
+<div class="page d-flex flex-column min-vh-100">
+    <main class="flex-grow-1">
+        <NavigationBar></NavigationBar>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
 </div>

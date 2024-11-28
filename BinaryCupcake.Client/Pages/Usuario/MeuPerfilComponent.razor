@@ -3,7 +3,15 @@
 @inject AutenticacaoService autenticacaoService
 @inject IUsuarioService usuarioService
 
-@if (usuarioAutenticado)
+@if (carregando)
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+}
+else if (usuarioAutenticado)
 {
     <div class="container">
         <h2>Perfil de Usuário</h2>
@@ -57,6 +65,7 @@ else
 @code {
     private UsuarioDTO usuario = new UsuarioDTO();
     private bool usuarioAutenticado = false;
+    private bool carregando = true;
     MessageDialog? messageDialogAtualizarPerfil;
     public bool MostrarBtnOcupado { get; set; }
     public bool MostrarBtnSalvar { get; set; } = true;
@@ -64,6 +73,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await ObterDetalhesUsuario();
+        carregando = false;
     }
 
     private async Task ObterDetalhesUsuario()
